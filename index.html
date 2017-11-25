@@ -2,12 +2,17 @@
 <html lang="en">
 
 <head>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 
 </head>
 
 <body>
+
+<h1 class= title>Upload Your Image<h1>
 <input type="file" onchange="previewFile()"><br>
+<input type = 'text' name=""><br>
 <img src="" height="200" alt="Image preview...">
+<h1 id='success'></h1>
 
 
 
@@ -15,15 +20,20 @@
    function previewFile(){
        var preview = document.querySelector('img'); //selects the query named img
        var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+       var title    = document.querySelector('input[type=text]'); //sames as here
+       var success = document.getElementById('success')
+       console.log(title.value)
+
        var reader  = new FileReader();
 
        reader.onloadend = function () {
            preview.src = reader.result;
            console.log(reader.result);
 
+
            var data = JSON.stringify({
 
-             "title": "hey super kitten",
+             "title": title.value,
 
              "description": "we uploaded this from the new endpoint and it is a kitten!",
 
@@ -37,6 +47,17 @@
              if (this.readyState === 4) {
 
                console.log(this.responseText);
+
+               var responseData = JSON.parse(this.responseText)
+               var body = JSON.parse(responseData.body)
+               var fileName = (body.message)
+               success.innerHTML = "Successfully uploaded <a href ='http://tm-hackday-photo-bucket-template-2.s3-website-eu-west-1.amazonaws.com/"+fileName+"'>"+fileName+"</a>";
+
+              //  var rekognitionRequest = new XMLHttpRequest();
+               //
+              //   var rekognitionData = JSON.stringify({
+              //     KEY = fileName
+              //     BUCKET = “tm-hackerday-photo-bucket-template-2
 
              }
 
