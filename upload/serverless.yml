@@ -1,0 +1,19 @@
+service: upload-photo
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: dev
+  region: eu-west-1
+functions:
+  upload:
+    handler: handler.upload
+    runtime: nodejs6.10
+    environment:
+      BUCKET: tm-hackday-photo-bucket-template-2
+      BUCKET_URL: http://tm-hackday-photo-bucket-template-2.s3-website-eu-west-1.amazonaws.com
+    events:
+      - http:
+          path: upload
+          method: post
+          integration: lambda
+          cors: true
